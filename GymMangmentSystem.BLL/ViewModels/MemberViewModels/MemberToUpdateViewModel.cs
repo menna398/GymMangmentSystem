@@ -9,7 +9,7 @@ namespace GymMangmentSystem.BLL.ViewModels.MemberViewModels
 {
     public class MemberToUpdateViewModel
     {
-        public string? Name { get; set; }
+        public string Name { get; set; } = default!;
         public string? Photo { get; set; }
 
         [Required(ErrorMessage = "Email Is Required")]

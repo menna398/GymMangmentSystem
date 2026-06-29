@@ -1,3 +1,5 @@
+using GymMangmentSystem.BLL.Helpers;
+using AutoMapper;
 using GymMangmentSystem.BLL.Services.Classes;
 using GymMangmentSystem.BLL.Services.Interfaces;
 using GymMangmentSystem.DAL.Data.DbContexts;
@@ -5,6 +7,7 @@ using GymMangmentSystem.DAL.Repositories.Classes;
 using GymMangmentSystem.DAL.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
 
 namespace GymMangmentSystem
@@ -25,11 +28,19 @@ namespace GymMangmentSystem
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); //for genaric
 
             builder.Services.AddScoped<IMemberService, MemberService>();
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
+            builder.Services.AddScoped<ISessionService, SessionService>();
 
             builder.Services.AddDbContext<GymDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+            //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 
